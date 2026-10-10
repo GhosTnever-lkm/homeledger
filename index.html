@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101917"><meta name="description" content="A private, local-first inventory for the things you own and the warranties attached to them.">
+  <title>HomeLedger — know what you own</title><link rel="icon" href="./assets/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#top" aria-label="HomeLedger home"><span class="brand-mark">H</span><span>homeledger<span class="brand-dot">.</span></span></a>
+      <div class="side-label">YOUR HOME</div>
+      <nav aria-label="Main navigation"><a class="nav-link active" href="#dashboard"><span>◫</span> Overview</a><a class="nav-link" href="#inventory"><span>▤</span> All items <b id="nav-count">0</b></a></nav>
+      <div class="side-bottom"><div class="privacy-mark"><span class="lock-icon">◈</span><div><strong>Your data stays yours</strong><small>Stored only in this browser</small></div></div><div class="profile"><span class="avatar">G</span><span><strong>GhosTnever</strong><small>Personal home</small></span><span class="more">···</span></div></div>
+    </aside>
+    <main id="top">
+      <header class="topbar"><div class="breadcrumb">Home <span>/</span> Overview</div><div class="top-actions"><span class="local-pill"><i></i> Private &amp; local</span><button class="icon-button" id="theme-toggle" aria-label="Toggle appearance">◐</button></div></header>
+      <section class="welcome" id="dashboard"><div><p class="eyebrow">SATURDAY, <span id="today-label">OCTOBER 10</span></p><h1>Good morning, <em>GhosTnever.</em></h1><p class="subhead">A clear picture of what you own, and what’s still covered.</p></div><button class="button primary" id="add-first"><span>＋</span> Add an item</button></section>
+      <section class="stats-grid" aria-label="Inventory summary">
+        <article class="stat-card"><div class="stat-top"><span>Items tracked</span><span class="stat-icon green">▦</span></div><strong id="stat-items">0</strong><small>In your home inventory</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Purchase value</span><span class="stat-icon blue">↗</span></div><strong id="stat-value">$0</strong><small>Based on items with a price</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Warranty watch</span><span class="stat-icon amber">◷</span></div><strong id="stat-soon">0</strong><small>Ending in the next 30 days</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Past warranty</span><span class="stat-icon rose">⌁</span></div><strong id="stat-expired">0</strong><small>Items to keep an eye on</small></article>
+      </section>
+      <section class="content-grid">
+        <article class="panel inventory-panel" id="inventory"><div class="panel-heading"><div><p class="eyebrow">YOUR COLLECTION</p><h2>Home inventory <span id="item-count">0</span></h2></div><button class="button secondary" id="add-item">＋ Add item</button></div>
+          <div class="toolbar"><label class="search-box"><span>⌕</span><input id="search" type="search" placeholder="Search name, brand, room…" aria-label="Search inventory"><kbd>⌘ K</kbd></label><select id="category-filter" aria-label="Filter by category"><option value="">All categories</option></select><select id="warranty-filter" aria-label="Filter by warranty"><option value="">Any warranty</option><option value="soon">Ending soon</option><option value="active">Active</option><option value="expired">Expired</option><option value="unknown">No date</option></select></div>
+          <div class="table-wrap"><table><thead><tr><th>ITEM</th><th>CATEGORY</th><th>LOCATION</th><th>VALUE</th><th>WARRANTY</th><th></th></tr></thead><tbody id="inventory-body"></tbody></table></div>
+          <div class="empty-state" id="empty-state"><div class="empty-art"><span>⌂</span><i>✳</i></div><h3>Your home, accounted for.</h3><p>Add the things you want to keep track of. Warranty dates and total value will show up here.</p><button class="button primary" id="empty-add">＋ Add your first item</button></div>
+          <div class="no-results" id="no-results" hidden>No items match these filters. <button id="clear-filters">Clear filters</button></div>
+        </article>
+        <div class="right-column"><article class="panel warranty-panel"><div class="panel-heading"><div><p class="eyebrow">DON’T MISS A DATE</p><h2>Warranty watch <span class="calendar-icon">▦</span></h2></div></div><div id="warranty-list" class="warranty-list"></div><div class="mini-empty" id="warranty-empty"><span>✓</span><strong>You’re all caught up.</strong><small>No warranties expiring soon.</small></div></article>
+          <article class="tip-card"><div class="tip-icon">✳</div><div class="tip-label">A LITTLE REMINDER</div><p>Keep a receipt photo with the item. Future you will be glad it’s right where you need it.</p><button id="tip-add">Add an item <span>↗</span></button><div class="tip-orb"></div></article>
+          <article class="panel backup-panel"><div class="backup-title"><span class="backup-symbol">↕</span><div><strong>Your data, your call</strong><small>Move or save a copy anytime.</small></div></div><div class="backup-actions"><button id="export-backup">↓ Export backup</button><button id="import-backup">↑ Import backup</button><input id="backup-file" type="file" accept="application/json,.json" hidden></div></article>
+        </div>
+      </section>
+      <footer><span>HOMELEDGER <b>·</b> MADE FOR YOUR HOME</span><span>Nothing leaves this device <i></i></span></footer>
+    </main>
+  </div>
+  <dialog id="item-dialog" class="item-dialog"><form id="item-form" novalidate><div class="dialog-top"><div><p class="eyebrow">HOME INVENTORY</p><h2 id="dialog-title">Add an item</h2></div><button class="dialog-close" type="button" id="dialog-close" aria-label="Close">×</button></div><input type="hidden" id="item-id"><div class="form-grid"><label class="wide">Item name <span>*</span><input id="field-name" maxlength="200" required placeholder="e.g. Coffee machine"></label><label>Category<select id="field-category"><option>Electronics</option><option>Appliances</option><option>Furniture</option><option>Tools</option><option>Kitchen</option><option>Sports &amp; outdoors</option><option>Other</option></select></label><label>Room / location<input id="field-location" maxlength="100" placeholder="e.g. Kitchen"></label><label>Brand<input id="field-brand" maxlength="120" placeholder="e.g. Philips"></label><label>Serial number<input id="field-serial" maxlength="120" placeholder="Optional"></label><label>Purchase price<input id="field-price" type="number" min="0" step="0.01" placeholder="0.00"></label><label>Currency<select id="field-currency"><option value="USD">USD — $</option><option value="EUR">EUR — €</option><option value="GBP">GBP — £</option><option value="AZN">AZN — ₼</option><option value="RUB">RUB — ₽</option></select></label><label>Purchase date<input id="field-purchase" type="date"></label><label>Warranty ends<input id="field-warranty" type="date"></label><label class="wide">Notes<textarea id="field-notes" rows="3" maxlength="2000" placeholder="Anything useful to remember…"></textarea></label></div><div class="form-error" id="form-error" role="alert"></div><div class="dialog-actions"><button class="button secondary" type="button" id="cancel-item">Cancel</button><button class="button primary" type="submit">Save item <span>→</span></button></div></form></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div><script type="module" src="./app.mjs"></script>
+</body></html>

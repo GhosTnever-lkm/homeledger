@@ -1,0 +1,14 @@
+{
+  "name": "homeledger",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Local-first home inventory and warranty tracker",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test",
+    "check": "node --check core.mjs && node --check store.mjs && node --check app.mjs && node --test"
+  },
+  "engines": { "node": ">=20" },
+  "license": "MIT"
+}
