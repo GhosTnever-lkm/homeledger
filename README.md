@@ -2,6 +2,8 @@
 
 **Know what you own. Keep the details close.**
 
+![HomeLedger: home inventory list with warranty tracking](docs/screenshot.png)
+
 HomeLedger is a calm, local-first home inventory and warranty tracker. Keep a useful record of household items, where they live, what they cost, and when their warranty ends.
 
 ## Features
