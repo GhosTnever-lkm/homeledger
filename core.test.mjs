@@ -58,6 +58,12 @@ test('backup rejects malformed JSON, unknown schema and invalid items', () => {
   assert.throws(() => importBackup('{"version":1,"items":[{"id":"x","name":""}]}'), /name is required/);
 });
 
+test('backup rejects duplicate IDs instead of allowing one record to overwrite another', () => {
+  const backup = JSON.stringify({ version: 1, items: [item('same-id', 'First item'), item('same-id', 'Second item')] });
+  assert.throws(() => importBackup(backup), /Duplicate item id: same-id/);
+  assert.throws(() => exportBackup([item('same-id', 'First item'), item('same-id', 'Second item')]), /Duplicate item id: same-id/);
+});
+
 test('backup rejects more than 5000 items and excessive JSON text', () => {
   assert.throws(() => importBackup(JSON.stringify({ version: 1, items: Array(5001).fill(item('x', 'Box')) })), /Too many items/);
   assert.throws(() => importBackup(' '.repeat(20_000_001)), /20 MB/);

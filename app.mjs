@@ -50,7 +50,7 @@ function showToast(message, error = false) {
   toastTimer = setTimeout(() => els.toast.classList.remove('visible'), 2800);
 }
 
-async function persist() { await saveItems(items); render(); }
+async function persist(nextItems = items) { await saveItems(nextItems); items = nextItems; render(); }
 function updateCategoryOptions() {
   const select = $('#category-filter');
   const current = select.value;
@@ -122,9 +122,10 @@ els.form.addEventListener('submit', async (event) => {
   };
   try {
     const valid = { ...validateItem(record), currency: record.currency };
-    const index = items.findIndex((entry) => entry.id === existingId);
-    if (index >= 0) items[index] = valid; else items.unshift(valid);
-    await persist();
+    const nextItems = items.slice();
+    const index = nextItems.findIndex((entry) => entry.id === existingId);
+    if (index >= 0) nextItems[index] = valid; else nextItems.unshift(valid);
+    await persist(nextItems);
     els.dialog.close();
     showToast(existingId ? 'Item updated.' : 'Item added to your home.');
   } catch (error) { $('#form-error').textContent = error.message; }
@@ -151,7 +152,7 @@ $('#backup-file').addEventListener('change', async (event) => {
   try {
     const imported = importBackup(await file.text());
     if (!confirm(`Replace your current ${items.length} items with ${imported.length} items from this backup?`)) return;
-    items = imported; await persist(); showToast('Backup restored successfully.');
+    await persist(imported); showToast('Backup restored successfully.');
   } catch (error) { showToast(`Backup not imported: ${error.message}`, true); }
   finally { event.target.value = ''; }
 });
