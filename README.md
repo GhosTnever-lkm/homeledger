@@ -1,5 +1,8 @@
 # HomeLedger
 
+[![CI](https://github.com/GhosTnever-lkm/homeledger/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/GhosTnever-lkm/homeledger/actions/workflows/ci.yml)
+[![Latest release](https://img.shields.io/github/v/release/GhosTnever-lkm/homeledger?label=release)](https://github.com/GhosTnever-lkm/homeledger/releases)
+
 **Know what you own. Keep the details close.**
 
 ![HomeLedger: home inventory list with warranty tracking](docs/screenshot.png)
@@ -35,7 +38,7 @@ Warranty labels are date-based reminders based on the date entered by the user. 
 
 ## Validation core
 
-`core.mjs` validates the version-1 item schema and backup as data, not executable code. It limits backups to 5,000 items and 20 MB of JSON, validates actual calendar dates, and computes warranty status from an explicit `today` argument. The app uses a separate currency-aware total for display because values in different currencies must not be added together.
+`core.mjs` validates the version-1 item schema and backup as data, not executable code. It limits backups to 5,000 items and 20 MB of JSON, rejects duplicate record IDs, validates actual calendar dates, and computes warranty status from an explicit `today` argument. The app uses a separate currency-aware total for display because values in different currencies must not be added together.
 
 ## Development
 
@@ -43,8 +46,6 @@ Warranty labels are date-based reminders based on the date entered by the user. 
 npm test
 npm run check
 ```
-
-DeepSeek helped outline the validation-core requirements and edge cases. The generated response stopped during the code block; the complete core, browser app, and tests were implemented and reviewed in this repository.
 
 ## License
 

@@ -78,7 +78,13 @@ export function getWarrantyStatus(item, today) {
 function validateItems(items) {
   if (!Array.isArray(items)) throw new TypeError('items must be an array');
   if (items.length > MAX_ITEMS) throw new RangeError(`Too many items (maximum ${MAX_ITEMS})`);
-  return items.map(validateItem);
+  const ids = new Set();
+  return items.map((item) => {
+    const clean = validateItem(item);
+    if (ids.has(clean.id)) throw new TypeError(`Duplicate item id: ${clean.id}`);
+    ids.add(clean.id);
+    return clean;
+  });
 }
 
 export function summarize(items, today) {
