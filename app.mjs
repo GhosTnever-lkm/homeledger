@@ -156,8 +156,17 @@ $('#backup-file').addEventListener('change', async (event) => {
   } catch (error) { showToast(`Backup not imported: ${error.message}`, true); }
   finally { event.target.value = ''; }
 });
-$('#theme-toggle').addEventListener('click', () => { document.body.classList.toggle('light-theme'); localStorage.setItem('homeledger-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark'); });
-if (localStorage.getItem('homeledger-theme') === 'light') document.body.classList.add('light-theme');
+function readSavedTheme() {
+  try { return localStorage.getItem('homeledger-theme'); } catch { return null; }
+}
+function saveTheme(theme) {
+  try { localStorage.setItem('homeledger-theme', theme); } catch { /* Keep the selected theme for this session if storage is unavailable. */ }
+}
+$('#theme-toggle').addEventListener('click', () => {
+  document.body.classList.toggle('light-theme');
+  saveTheme(document.body.classList.contains('light-theme') ? 'light' : 'dark');
+});
+if (readSavedTheme() === 'light') document.body.classList.add('light-theme');
 $('#today-label').textContent = new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric', timeZone: 'UTC' }).format(new Date(`${todayISO}T00:00:00Z`)).toUpperCase();
 document.addEventListener('keydown', (event) => { if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); $('#search').focus(); } });
 

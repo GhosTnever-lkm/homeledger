@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.4 - 2026-10-13
+
+- Keep HomeLedger usable when browser storage access is restricted: blocked theme storage no longer aborts startup or the theme toggle.
+
 ## 0.1.3 - 2026-10-13
 
 - Reject duplicate IDs in imported backups so one record cannot silently overwrite another in IndexedDB.
