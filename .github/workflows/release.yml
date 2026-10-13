@@ -3,6 +3,12 @@ name: Create release archive
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing version tag to package and upload
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -12,12 +18,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.release_tag || github.ref }}
       - name: Package source
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
         run: |
           mkdir -p dist
-          zip -r dist/HomeLedger-${GITHUB_REF_NAME}.zip . -x '.git/*' 'dist/*'
-          sha256sum dist/HomeLedger-${GITHUB_REF_NAME}.zip > dist/HomeLedger-${GITHUB_REF_NAME}.sha256
-      - name: Publish GitHub release
+          zip -r "dist/HomeLedger-${RELEASE_TAG}.zip" . -x '.git/*' 'dist/*'
+          sha256sum "dist/HomeLedger-${RELEASE_TAG}.zip" > "dist/HomeLedger-${RELEASE_TAG}.sha256"
+      - name: Publish or update GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" dist/* --title "HomeLedger $GITHUB_REF_NAME" --notes-file CHANGELOG.md
+          RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
+        run: |
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" dist/* --clobber
+          else
+            gh release create "$RELEASE_TAG" dist/* --title "HomeLedger $RELEASE_TAG" --notes-file CHANGELOG.md
+          fi
