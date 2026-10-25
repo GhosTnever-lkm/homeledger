@@ -18,6 +18,7 @@ HomeLedger is a calm, local-first home inventory and warranty tracker. Keep a us
 - Versioned JSON backup export and validated restore. Import asks before replacing the current catalog.
 - Responsive layout, keyboard search shortcut (`Ctrl/⌘ + K`), and a light appearance option.
 - No account, remote database, analytics, or third-party runtime dependencies.
+- Warranty countdowns use the device's local calendar date and update with its day.
 
 ## Run locally
 
