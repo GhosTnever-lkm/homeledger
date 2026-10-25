@@ -1,6 +1,6 @@
 {
   "name": "homeledger",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": false,
   "description": "Local-first home inventory and warranty tracker",
   "type": "module",

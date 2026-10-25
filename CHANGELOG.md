@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.5 - 2026-10-25
+
+- Use the device's local calendar date for warranty status and backup dates, avoiding UTC day-boundary errors.
+
 ## 0.1.4 - 2026-10-13
 
 - Keep HomeLedger usable when browser storage access is restricted: blocked theme storage no longer aborts startup or the theme toggle.

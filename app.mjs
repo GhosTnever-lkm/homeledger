@@ -1,4 +1,4 @@
-import { validateItem, summarize, filterItems, exportBackup, importBackup } from './core.mjs';
+import { validateItem, summarize, filterItems, exportBackup, importBackup, getLocalISODate } from './core.mjs';
 import { listItems, saveItems } from './store.mjs';
 
 const $ = (selector) => document.querySelector(selector);
@@ -8,7 +8,7 @@ const els = {
 };
 let items = [];
 let toastTimer;
-const todayISO = new Date().toISOString().slice(0, 10);
+const todayISO = getLocalISODate();
 const fmtDate = new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 
 function escapeHTML(value = '') {
@@ -60,7 +60,7 @@ function updateCategoryOptions() {
 }
 
 function render() {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = getLocalISODate();
   const summary = summarize(items, today);
   const shown = filterItems(items, { query: $('#search').value, category: $('#category-filter').value, warranty: $('#warranty-filter').value }, today);
   $('#stat-items').textContent = String(summary.count);

@@ -17,6 +17,11 @@ export function isValidISODate(value) {
   return day >= 1 && day <= days[month - 1];
 }
 
+export function getLocalISODate(date = new Date()) {
+  if (!(date instanceof Date) || !Number.isFinite(date.getTime())) throw new TypeError('date must be a valid Date');
+  return `${String(date.getFullYear()).padStart(4, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
 function requireDate(value, field) {
   if (!isValidISODate(value)) throw new TypeError(`${field} must be a valid ISO date (YYYY-MM-DD)`);
   return value;

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { validateItem, getWarrantyStatus, summarize, filterItems, exportBackup, importBackup } from './core.mjs';
+import { validateItem, getWarrantyStatus, summarize, filterItems, exportBackup, importBackup, getLocalISODate } from './core.mjs';
 
 const item = (id, name, extra = {}) => ({ id, name, ...extra });
 
@@ -18,6 +18,19 @@ test('warranty soon includes the 30-day boundary', () => {
 test('expiry today is soon; previous day is expired', () => {
   assert.equal(getWarrantyStatus({ warrantyUntil: '2024-05-15' }, '2024-05-15'), 'soon');
   assert.equal(getWarrantyStatus({ warrantyUntil: '2024-05-14' }, '2024-05-15'), 'expired');
+});
+
+test('today uses the local calendar date at midnight in UTC+4', () => {
+  const previousTimezone = process.env.TZ;
+  process.env.TZ = 'Asia/Baku';
+  try {
+    const justAfterLocalMidnight = new Date('2026-01-01T00:30:00+04:00');
+    assert.equal(justAfterLocalMidnight.toISOString().slice(0, 10), '2025-12-31');
+    assert.equal(getLocalISODate(justAfterLocalMidnight), '2026-01-01');
+  } finally {
+    if (previousTimezone === undefined) delete process.env.TZ;
+    else process.env.TZ = previousTimezone;
+  }
 });
 
 test('missing warranty is unknown', () => {
